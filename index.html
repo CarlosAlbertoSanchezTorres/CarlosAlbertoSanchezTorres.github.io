@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  Carlos Alberto Sánchez Torres | Blog de Contabilidad</title>
+  <meta name="description" content="Blog académico de Carlos Alberto Sánchez Torres sobre contabilidad, teoría contable, investigación y formación profesional." />
+  <meta name="author" content="Carlos Alberto Sánchez Torres" />
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --surface: #ffffff;
+      --primary: #133c55;
+      --primary-2: #386fa4;
+      --text: #1f2937;
+      --muted: #5b6470;
+      --border: #d9e2ec;
+      --accent: #f0b429;
+      --shadow: 0 12px 30px rgba(19, 60, 85, 0.08);
+      --max: 1100px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.7;
+    }
+
+    a {
+      color: var(--primary-2);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      width: min(92%, var(--max));
+      margin: 0 auto;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0f2f43 0%, #184e77 100%);
+      color: white;
+      padding: 20px 0 72px;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      font-size: 1.05rem;
+      font-weight: bold;
+      letter-spacing: 0.3px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      font-size: 0.98rem;
+    }
+
+    .hero {
+      padding-top: 64px;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 30px;
+      align-items: center;
+    }
+
+    .hero-card {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.18);
+      padding: 28px;
+      border-radius: 22px;
+      backdrop-filter: blur(6px);
+    }
+
+    .tag {
+      display: inline-block;
+      background: rgba(240, 180, 41, 0.16);
+      color: #ffe29a;
+      border: 1px solid rgba(255, 226, 154, 0.2);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      margin-bottom: 14px;
+    }
+
+    h1, h2, h3 {
+      line-height: 1.2;
+      margin-top: 0;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      margin-bottom: 16px;
+    }
+
+    .hero p {
+      font-size: 1.08rem;
+      color: #e7eef5;
+    }
+
+    .cta {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 12px 18px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      font-weight: bold;
+    }
+
+    .button.primary {
+      background: var(--accent);
+      color: #1d1d1d;
+    }
+
+    .button.secondary {
+      background: transparent;
+      border-color: rgba(255,255,255,0.3);
+      color: white;
+    }
+
+    main {
+      margin-top: -40px;
+      padding-bottom: 50px;
+    }
+
+    section {
+      margin: 28px 0;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .section-title {
+      font-size: 1.8rem;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 22px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow);
+    }
+
+    .card h3 {
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+
+    .post-meta {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    ul.clean {
+      padding-left: 18px;
+      margin-bottom: 0;
+    }
+
+    footer {
+      padding: 30px 0 50px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    .quote {
+      border-left: 4px solid var(--accent);
+      padding-left: 16px;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    @media (max-width: 900px) {
+      .hero,
+      .grid-3,
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+
+      header {
+        padding-bottom: 56px;
+      }
+
+      main {
+        margin-top: -28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <div class="brand">Carlos Alberto Sánchez Torres</div>
+        <div class="nav-links">
+          <a href="#sobre">Sobre mí</a>
+          <a href="#articulos">Artículos</a>
+          <a href="#lineas">Líneas de trabajo</a>
+          <a href="#recursos">Recursos</a>
+          <a href="#contacto">Contacto</a>
+        </div>
+      </nav>
+
+      <div class="hero">
+        <div>
+          <span class="tag">Blog académico de contabilidad</span>
+          <h1>Contabilidad, teoría contable e investigación con enfoque riguroso</h1>
+          <p>
+            Espacio personal de <strong>Carlos Alberto Sánchez Torres</strong> dedicado al estudio,
+            análisis y divulgación de temas contables: teoría contable, historia de la contabilidad,
+            información financiera, formación profesional y reflexión académica.
+          </p>
+          <div class="cta">
+            <a class="button primary" href="#articulos">Ver artículos</a>
+            <a class="button secondary" href="#contacto">Contactar</a>
+          </div>
+        </div>
+
+        <div class="hero-card">
+          <h2>Propósito del blog</h2>
+          <p>
+            Crear un archivo intelectual propio sobre contabilidad, con textos claros,
+            serios y útiles para estudiantes, investigadores y lectores interesados en el pensamiento contable.
+          </p>
+          <p class="quote">
+            “La contabilidad no solo registra hechos económicos: también organiza, interpreta y comunica una visión de la realidad.”
+          </p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <section id="sobre" class="panel">
+        <h2 class="section-title">Sobre mí</h2>
+        <p>
+          Soy <strong>Carlos Alberto Sánchez Torres</strong>. Este sitio reúne mis escritos y materiales sobre contabilidad,
+          con especial interés en la dimensión académica y teórica de la disciplina. Aquí publicaré ensayos, notas de lectura,
+          comentarios bibliográficos, reflexiones sobre formación contable y recursos de estudio.
+        </p>
+        <p class="muted">
+          Puedes editar este texto para añadir tu perfil académico, universidad, líneas de interés y objetivos intelectuales.
+        </p>
+      </section>
+
+      <section id="articulos">
+        <h2 class="section-title">Artículos recientes</h2>
+        <div class="grid-3">
+          <article class="card">
+            <div class="post-meta">Entrada 1 · Teoría contable</div>
+            <h3>¿Qué es realmente la contabilidad?</h3>
+            <p>
+              Una introducción al concepto de contabilidad desde una perspectiva académica: disciplina, lenguaje,
+              sistema de información y construcción teórica.
+            </p>
+            <a href="#">Leer artículo</a>
+          </article>
+
+          <article class="card">
+            <div class="post-meta">Entrada 2 · Historia</div>
+            <h3>Breve panorama de la evolución de la teoría contable</h3>
+            <p>
+              Un recorrido sintético por algunas etapas clave del pensamiento contable y sus principales transformaciones.
+            </p>
+            <a href="#">Leer artículo</a>
+          </article>
+
+          <article class="card">
+            <div class="post-meta">Entrada 3 · Formación profesional</div>
+            <h3>Cómo estudiar contabilidad con mayor profundidad</h3>
+            <p>
+              Estrategias para leer mejor, construir criterio técnico y desarrollar una formación contable más sólida.
+            </p>
+            <a href="#">Leer artículo</a>
+          </article>
+        </div>
+      </section>
+
+      <section id="lineas" class="panel">
+        <h2 class="section-title">Líneas de trabajo</h2>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Teoría contable</h3>
+            <p>Conceptos, escuelas, debates y fundamentos epistemológicos de la contabilidad.</p>
+          </div>
+          <div class="card">
+            <h3>Historia de la contabilidad</h3>
+            <p>Autores, tradiciones intelectuales y evolución del pensamiento contable.</p>
+          </div>
+          <div class="card">
+            <h3>Educación contable</h3>
+            <p>Formación universitaria, hábitos de estudio, bibliografía y aprendizaje riguroso.</p>
+          </div>
+          <div class="card">
+            <h3>Lecturas y reseñas</h3>
+            <p>Comentarios de libros, artículos académicos y materiales clave para profundizar en la disciplina.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="recursos" class="panel">
+        <h2 class="section-title">Recursos recomendados</h2>
+        <ul class="clean">
+          <li>Bibliografías comentadas de teoría contable.</li>
+          <li>Listas de lectura para estudiantes de contaduría pública.</li>
+          <li>Guías de escritura académica aplicada a contabilidad.</li>
+          <li>Notas sobre historia del pensamiento contable.</li>
+        </ul>
+      </section>
+
+      <section id="contacto" class="panel">
+        <h2 class="section-title">Contacto</h2>
+        <p>
+          Puedes reemplazar este bloque por tu correo académico, redes profesionales o formulario de contacto.
+        </p>
+        <p>
+          <strong>Correo:</strong> tu-correo@ejemplo.com<br />
+          <strong>Ciudad:</strong> Bogotá, Colombia
+        </p>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      © 2026 Carlos Alberto Sánchez Torres · Blog de Contabilidad · Sitio publicado con GitHub Pages
+    </div>
+  </footer>
+</body>
+</html>
