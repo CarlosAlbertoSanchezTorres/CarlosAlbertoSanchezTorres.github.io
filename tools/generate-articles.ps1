@@ -62,6 +62,101 @@ $articles = @(
 
 $articles = $articles | Sort-Object { [int]$_.Number }
 
+function Get-CategoryPerspective {
+  param(
+    [string]$Category
+  )
+
+  switch ($Category) {
+    "Teoría contable" {
+      return @{
+        Perspective = "En el trasfondo de esta discusión aparece una pregunta constante por el estatuto intelectual de la contabilidad: si debe entenderse solo como técnica aplicada o también como lenguaje, teoría y forma de conocimiento socialmente situada."
+        Application = "Llevado al aula y a la investigación, este enfoque invita a leer conceptos con más paciencia, comparar autores y reconocer que las categorías contables no nacen aisladas, sino dentro de tradiciones de pensamiento y decisiones institucionales."
+        References = @(
+          "Richard Mattessich, <em>Accounting and Analytical Methods</em>.",
+          "Ahmed Riahi-Belkaoui, <em>Accounting Theory</em>.",
+          "Jorge Tua Pereda, <em>Lecturas de teoría e investigación contable</em>."
+        )
+      }
+    }
+    "Historia" {
+      return @{
+        Perspective = "Mirar históricamente la contabilidad permite entender que sus prácticas actuales son el resultado de largos procesos de cambio, disputa y adaptación institucional. La historia no es un adorno erudito, sino una vía para comprender por qué pensamos hoy como pensamos."
+        Application = "Desde esta perspectiva, cada concepto gana espesor cuando se lo ubica en sus contextos de aparición, en las necesidades sociales que buscó atender y en los debates que lo acompañaron."
+        References = @(
+          "Basil Yamey, estudios sobre historia de la contabilidad y partida doble.",
+          "Federico Gertz Manero, trabajos introductorios de historia contable.",
+          "Jorge Tua Pereda, textos sobre evolución del pensamiento contable."
+        )
+      }
+    }
+    "Formación profesional" {
+      return @{
+        Perspective = "La formación contable no se limita al dominio instrumental. También exige disciplina de lectura, capacidad de escritura, criterio analítico y hábitos de estudio que permitan sostener aprendizajes complejos en el tiempo."
+        Application = "Por eso, este tema toca directamente la vida académica cotidiana: cómo se toman notas, cómo se organizan las lecturas, cómo se corrigen errores y cómo se transforma la práctica de estudio en una práctica intelectual más rigurosa."
+        References = @(
+          "Paulo Freire, reflexiones sobre lectura crítica y formación.",
+          "Ángel Díaz Barriga, aportes sobre enseñanza y trabajo académico.",
+          "Bibliografía pedagógica aplicada a educación superior y hábitos de estudio."
+        )
+      }
+    }
+    "Información financiera" {
+      return @{
+        Perspective = "La información financiera adquiere sentido cuando se examina su capacidad para orientar decisiones, comunicar situaciones económicas y hacer visibles ciertos aspectos de la realidad organizacional mientras deja otros en segundo plano."
+        Application = "Esto obliga a leer los informes con una mirada menos automática: identificar usuarios, revisar supuestos de presentación y preguntarse qué relaciones o riesgos se vuelven visibles a través de los estados y sus notas."
+        References = @(
+          "Marco conceptual de la información financiera.",
+          "Eldon S. Hendriksen, <em>Accounting Theory</em>.",
+          "Textos introductorios de análisis e interpretación de estados financieros."
+        )
+      }
+    }
+    "Educación contable" {
+      return @{
+        Perspective = "La educación contable es un campo donde se cruzan exigencias técnicas, problemas pedagógicos y decisiones curriculares. Pensarla bien implica preguntarse no solo qué se enseña, sino también cómo se aprende y qué tipo de profesional se está formando."
+        Application = "En ese marco, los hábitos de estudio, la retroalimentación y las dinámicas de aula dejan de ser asuntos secundarios y pasan a ser parte del núcleo mismo de la formación."
+        References = @(
+          "Trabajos sobre pedagogía universitaria y didáctica profesional.",
+          "Literatura sobre educación contable en América Latina.",
+          "Estudios sobre evaluación formativa y aprendizaje reflexivo."
+        )
+      }
+    }
+    "Investigación" {
+      return @{
+        Perspective = "La investigación contable exige rigor en la formulación de problemas, en el uso de fuentes y en la escritura. No basta con elegir un tema interesante: hay que construir una pregunta, una ruta metodológica y una conversación bibliográfica verificable."
+        Application = "Por eso estos asuntos son decisivos para estudiantes y docentes que buscan pasar de la curiosidad inicial a un trabajo académico con estructura, trazabilidad y aporte propio."
+        References = @(
+          "Umberto Eco, <em>Cómo se hace una tesis</em>.",
+          "Metodologías de investigación documental y cualitativa.",
+          "Textos de escritura académica y construcción del estado del arte."
+        )
+      }
+    }
+    "Normas" {
+      return @{
+        Perspective = "Las normas contables intentan ordenar la práctica y ofrecer criterios comparables, pero siempre requieren interpretación. Su estudio es más fértil cuando se examina la relación entre regla, juicio profesional y condiciones reales de aplicación."
+        Application = "En ese sentido, leer normas supone algo más que ubicar requerimientos puntuales: implica entender sus fines, sus supuestos y las zonas en las que el profesional debe justificar sus decisiones."
+        References = @(
+          "Marco conceptual y bases de presentación de información financiera.",
+          "Textos sobre juicio profesional y aplicación normativa.",
+          "Estudios sobre materialidad, revelación y consistencia informativa."
+        )
+      }
+    }
+    default {
+      return @{
+        Perspective = "Este tema permite pensar la contabilidad como un campo intelectual que combina práctica, lenguaje, institución y reflexión crítica."
+        Application = "Su valor está en abrir preguntas de estudio, análisis e investigación que pueden desarrollarse con mayor profundidad."
+        References = @(
+          "Bibliografía general de teoría e investigación contable."
+        )
+      }
+    }
+  }
+}
+
 function Build-ArticlePage {
   param(
     [hashtable]$Article
@@ -71,6 +166,8 @@ function Build-ArticlePage {
   $timeDisplay = $Article.Date.ToString("HH:mm")
   $entryLabel = "Entrada $($Article.Number)"
   $questionList = ($Article.Questions | ForEach-Object { "          <li>$_</li>" }) -join "`n"
+  $categoryPerspective = Get-CategoryPerspective -Category $Article.Category
+  $referencesList = ($categoryPerspective.References | ForEach-Object { "          <li>$_</li>" }) -join "`n"
 
   return @"
 <!DOCTYPE html>
@@ -122,20 +219,34 @@ function Build-ArticlePage {
 
         <div class="post-meta">$entryLabel · $($Article.Category) · $dateDisplay · $timeDisplay</div>
 
-        <p>$($Article.Lead)</p>
+        <p class="article-intro">$($Article.Lead)</p>
 
-        <h2>Desarrollo</h2>
+        <h2>Planteamiento</h2>
+        <p>$($Article.Lead)</p>
         <p>$($Article.Focus)</p>
-        <p>Desde una perspectiva académica, este tema invita a revisar conceptos, autores y debates que permiten pasar de una comprensión puramente operativa a una comprensión más reflexiva de la disciplina contable.</p>
-        <p>También sugiere una práctica de estudio más atenta: leer con preguntas, comparar enfoques y relacionar el contenido con problemas reales de formación, análisis o investigación.</p>
+
+        <h2>Discusión académica</h2>
+        <p>$($categoryPerspective.Perspective)</p>
+        <p>Desde una perspectiva académica, este asunto invita a revisar conceptos, autores y debates que permiten pasar de una comprensión puramente operativa a una comprensión más reflexiva de la disciplina contable. En ese tránsito, el lector empieza a notar que muchas decisiones aparentemente técnicas descansan en supuestos conceptuales y en marcos de interpretación que vale la pena hacer explícitos.</p>
+        <p>$($categoryPerspective.Application)</p>
+
+        <h2>Proyección para el estudio y la escritura</h2>
+        <p>Una consecuencia práctica de esta reflexión es que conviene leer con preguntas, comparar enfoques y relacionar el contenido con problemas reales de formación, análisis o investigación. Esa práctica de lectura lenta y argumentada fortalece el criterio y evita que la contabilidad se reduzca a una secuencia de respuestas memorizadas.</p>
+        <p>En el marco de este blog, cada entrada busca aportar precisamente a ese tipo de archivo intelectual: un espacio donde la teoría, la historia, la formación y la información financiera puedan dialogar entre sí con mayor claridad y continuidad.</p>
 
         <h2>Preguntas para profundizar</h2>
         <ul>
 $questionList
         </ul>
 
+        <h2>Bibliografía orientativa</h2>
+        <ul>
+$referencesList
+        </ul>
+
         <h2>Cierre</h2>
         <p>La utilidad de esta entrada está en ofrecer un punto de partida claro para seguir pensando la contabilidad con mayor rigor. Cada tema del archivo puede leerse de manera independiente, pero también forma parte de una conversación más amplia sobre teoría, historia, información y formación profesional.</p>
+        <p>Leído en conjunto con las demás publicaciones, este texto contribuye a consolidar una línea de trabajo centrada en el pensamiento contable riguroso, la lectura crítica y la construcción de un archivo propio de estudio e investigación.</p>
       </section>
     </div>
   </main>
@@ -159,8 +270,9 @@ foreach ($article in $articles) {
 $articleCards = ($articles | ForEach-Object {
   $dateDisplay = $_.Date.ToString("dd/MM/yyyy")
   $timeDisplay = $_.Date.ToString("HH:mm")
+  $searchText = "entrada $($_.Number) $($_.Category) $($_.Title) $($_.Summary)"
 @"
-          <article class="card article-card">
+          <article class="card article-card archive-item" data-entry="$($_.Number)" data-search="$searchText">
             <div class="post-meta">Entrada $($_.Number) · $($_.Category)</div>
             <h3>$($_.Title)</h3>
             <p>$($_.Summary)</p>
@@ -220,8 +332,23 @@ $archiveContent = @"
         <a class="back-link" href="../index.html#articulos">← Volver al inicio</a>
         <h2 class="section-title">Archivo de artículos</h2>
         <p class="muted">50 publicaciones ordenadas por número de entrada, fecha y hora.</p>
+        <div class="archive-toolbar">
+          <label class="search-field" for="article-search">
+            <span>Buscar en el archivo</span>
+            <input id="article-search" type="search" placeholder="Título, categoría, resumen o número de entrada" />
+          </label>
+          <div class="archive-meta">
+            <p id="results-summary" class="results-summary">Mostrando 1-9 de 50 artículos</p>
+            <p class="muted">Orden fijo por entrada editorial</p>
+          </div>
+        </div>
         <div class="articles-list">
 $articleCards
+        </div>
+        <div class="pagination" aria-label="Paginación del archivo">
+          <button id="prev-page" class="pagination-button" type="button">Anterior</button>
+          <div id="page-numbers" class="page-numbers"></div>
+          <button id="next-page" class="pagination-button" type="button">Siguiente</button>
         </div>
       </section>
     </div>
@@ -232,6 +359,7 @@ $articleCards
       © 2026 Carlos Alberto Sánchez Torres · Blog de Contabilidad
     </div>
   </footer>
+  <script src="archive.js"></script>
 </body>
 </html>
 "@
