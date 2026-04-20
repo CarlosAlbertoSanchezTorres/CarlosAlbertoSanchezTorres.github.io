@@ -9,18 +9,18 @@ if (-not (Test-Path $articlesDir)) {
 
 Get-ChildItem -Path $articlesDir -Filter "*.html" -File | Remove-Item -Force
 
-$archiveScript = Join-Path $articlesDir "archive.js"
-if (Test-Path $archiveScript) {
-  Remove-Item $archiveScript -Force
-}
-
 $article = @{
-  Tag = "Articulo academico"
-  ShortTitle = "Teoria contable y normatividad"
-  Title = "Entre la neutralidad imposible y la finalidad publica: limites de la teoria contable positiva y vigencia de la teoria normativa en los marcos conceptuales contemporaneos"
-  Summary = "Articulo academico sobre los limites de la teoria contable positiva y la vigencia de la teoria normativa para la rendicion de cuentas, la sostenibilidad y el diseno de marcos conceptuales contemporaneos."
+  Number = 1
+  Category = "Teoria contable"
   Date = "19/04/2026"
+  Time = "21:43"
   ReadTime = "12 min de lectura"
+  ShortTitle = "Teoria contable y normatividad"
+  Title = "Entre la neutralidad imposible y la finalidad publica"
+  FullTitle = "Entre la neutralidad imposible y la finalidad publica: limites de la teoria contable positiva y vigencia de la teoria normativa en los marcos conceptuales contemporaneos"
+  Summary = "Articulo academico sobre los limites de la teoria contable positiva y la vigencia de la teoria normativa para la rendicion de cuentas, la sostenibilidad y el diseno de marcos conceptuales contemporaneos."
+  Lead = "Este articulo examina criticamente la relacion entre teoria contable positiva y teoria contable normativa, argumentando que la primera, aunque util para explicar practicas y comportamientos, resulta insuficiente para fundamentar marcos conceptuales orientados a la rendicion de cuentas, la sostenibilidad y la regulacion publica."
+  Focus = "La contabilidad aplicada necesita fines explicitos cuando busca accountability, sostenibilidad y diseno institucional."
   Keywords = @(
     "teoria contable positiva",
     "teoria contable normativa",
@@ -98,18 +98,15 @@ $article = @{
   )
 }
 
-$keywords = ($article.Keywords | ForEach-Object { "          <li>$_</li>" }) -join "`n"
-$sections = ($article.Sections | ForEach-Object {
-  $heading = $_.Heading
+$questionList = ($article.Keywords | ForEach-Object { "          <li>$_</li>" }) -join "`n"
+$sectionBlocks = ($article.Sections | ForEach-Object {
   $paragraphs = ($_.Paragraphs | ForEach-Object { "        <p>$_</p>" }) -join "`n"
 @"
-      <section>
-        <h2>$heading</h2>
+        <h2>$($_.Heading)</h2>
 $paragraphs
-      </section>
 "@
-}) -join "`n"
-$references = ($article.References | ForEach-Object { "          <li>$_</li>" }) -join "`n"
+}) -join "`n`n"
+$referencesList = ($article.References | ForEach-Object { "          <li>$_</li>" }) -join "`n"
 
 $articlePage = @"
 <!DOCTYPE html>
@@ -117,8 +114,11 @@ $articlePage = @"
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>$($article.ShortTitle) | Carlos Alberto Sanchez Torres</title>
-  <meta name="description" content="$($article.Summary)" />
+  <title>$($article.FullTitle) | Carlos Alberto Sanchez Torres</title>
+  <meta
+    name="description"
+    content="$($article.Summary)"
+  />
   <meta name="author" content="Carlos Alberto Sanchez Torres" />
   <link rel="stylesheet" href="../style.css" />
 </head>
@@ -129,23 +129,23 @@ $articlePage = @"
         <div class="brand">Carlos Alberto Sanchez Torres</div>
         <div class="nav-links">
           <a href="../index.html">Inicio</a>
-          <a href="../index.html#articulo">Articulo</a>
+          <a href="../index.html#articulos">Articulos</a>
           <a href="../index.html#contacto">Contacto</a>
         </div>
       </nav>
 
       <div class="hero">
         <div>
-          <span class="tag">$($article.Tag)</span>
-          <h1>$($article.Title)</h1>
+          <span class="tag">$($article.Category)</span>
+          <h1>$($article.FullTitle)</h1>
           <p>$($article.Summary)</p>
         </div>
 
         <div class="hero-card">
-          <h2>$($article.ShortTitle)</h2>
+          <h2>Entrada $($article.Number)</h2>
           <p><strong>Fecha:</strong> $($article.Date)</p>
-          <p><strong>Formato:</strong> Articulo academico</p>
-          <p class="quote">La rendicion de cuentas y la sostenibilidad exigen una teoria contable capaz de explicitar sus fines.</p>
+          <p><strong>Hora:</strong> $($article.Time)</p>
+          <p class="quote">$($article.Focus)</p>
         </div>
       </div>
     </div>
@@ -154,35 +154,235 @@ $articlePage = @"
   <main>
     <div class="container">
       <section class="panel article-content">
-        <a class="back-link" href="../index.html">Volver al inicio</a>
+        <a class="back-link" href="index.html">Ver todos los articulos</a>
 
-        <div class="post-meta">$($article.Date) - $($article.ReadTime)</div>
-        <p class="article-intro">$($article.Summary)</p>
+        <div class="post-meta">Entrada $($article.Number) - $($article.Category) - $($article.Date) - $($article.Time)</div>
+
+        <p class="article-intro">$($article.Lead)</p>
 
         <h2>Palabras clave</h2>
-        <ul class="clean">
-$keywords
+        <ul>
+$questionList
         </ul>
 
-$sections
+$sectionBlocks
 
-        <section>
-          <h2>Referencias</h2>
-          <ul class="clean">
-$references
-          </ul>
-        </section>
+        <h2>Referencias</h2>
+        <ul>
+$referencesList
+        </ul>
       </section>
     </div>
   </main>
 
   <footer>
     <div class="container">
-      Copyright 2026 Carlos Alberto Sanchez Torres - Articulo academico
+      Copyright 2026 Carlos Alberto Sanchez Torres - Blog de Contabilidad
     </div>
   </footer>
 </body>
 </html>
 "@
 
-[System.IO.File]::WriteAllText((Join-Path $articlesDir "index.html"), $articlePage, [System.Text.UTF8Encoding]::new($false))
+[System.IO.File]::WriteAllText((Join-Path $articlesDir "articulo-1.html"), $articlePage, [System.Text.UTF8Encoding]::new($false))
+
+$archivePage = @"
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Todos los articulos | Carlos Alberto Sanchez Torres</title>
+  <meta
+    name="description"
+    content="Archivo completo de articulos de Carlos Alberto Sanchez Torres ordenado por entrada, con fecha y hora de publicacion."
+  />
+  <meta name="author" content="Carlos Alberto Sanchez Torres" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <div class="brand">Carlos Alberto Sanchez Torres</div>
+        <div class="nav-links">
+          <a href="../index.html">Inicio</a>
+          <a href="../index.html#sobre">Sobre mi</a>
+          <a href="../index.html#contacto">Contacto</a>
+        </div>
+      </nav>
+
+      <div class="hero">
+        <div>
+          <span class="tag">Archivo completo</span>
+          <h1>Todos los articulos</h1>
+          <p>
+            Esta pagina reune el archivo disponible del blog en orden de entrada, con fecha y hora de publicacion.
+          </p>
+        </div>
+
+        <div class="hero-card">
+          <h2>Orden editorial</h2>
+          <p>Los articulos estan organizados desde la Entrada 1 en adelante.</p>
+          <p class="quote">Cada registro muestra su fecha y hora para conservar el orden exacto del archivo.</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <section class="panel">
+        <a class="back-link" href="../index.html#articulos">Volver al inicio</a>
+        <h2 class="section-title">Archivo de articulos</h2>
+        <p class="muted">1 publicacion ordenada por numero de entrada, fecha y hora.</p>
+        <div class="archive-toolbar">
+          <label class="search-field" for="article-search">
+            <span>Buscar en el archivo</span>
+            <input id="article-search" type="search" placeholder="Titulo, categoria, resumen o numero de entrada" />
+          </label>
+          <div class="archive-meta">
+            <p id="results-summary" class="results-summary">Mostrando 1-1 de 1 articulos</p>
+            <p class="muted">Orden fijo por entrada editorial</p>
+          </div>
+        </div>
+        <div class="articles-list">
+          <article class="card article-card archive-item" data-entry="1" data-search="entrada 1 $($article.Category) $($article.FullTitle) $($article.Summary)">
+            <div class="post-meta">Entrada 1 - $($article.Category)</div>
+            <h3>$($article.FullTitle)</h3>
+            <p>$($article.Summary)</p>
+            <p class="post-datetime">$($article.Date) - $($article.Time)</p>
+            <a href="articulo-1.html">Leer articulo completo</a>
+          </article>
+        </div>
+        <div class="pagination" aria-label="Paginacion del archivo">
+          <button id="prev-page" class="pagination-button" type="button">Anterior</button>
+          <div id="page-numbers" class="page-numbers"></div>
+          <button id="next-page" class="pagination-button" type="button">Siguiente</button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      Copyright 2026 Carlos Alberto Sanchez Torres - Blog de Contabilidad
+    </div>
+  </footer>
+  <script src="archive.js"></script>
+</body>
+</html>
+"@
+
+[System.IO.File]::WriteAllText((Join-Path $articlesDir "index.html"), $archivePage, [System.Text.UTF8Encoding]::new($false))
+
+$archiveScriptContent = @"
+const items = Array.from(document.querySelectorAll(".archive-item"));
+const searchInput = document.querySelector("#article-search");
+const resultsSummary = document.querySelector("#results-summary");
+const pageNumbers = document.querySelector("#page-numbers");
+const prevButton = document.querySelector("#prev-page");
+const nextButton = document.querySelector("#next-page");
+
+const pageSize = 9;
+let currentPage = 1;
+let filteredItems = [...items];
+
+function normalize(value) {
+  return value
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
+function updateSummary(total) {
+  if (!total) {
+    resultsSummary.textContent = "No hay articulos que coincidan con la busqueda.";
+    return;
+  }
+
+  const start = (currentPage - 1) * pageSize + 1;
+  const end = Math.min(start + pageSize - 1, total);
+  resultsSummary.textContent = `Mostrando ${start}-${end} de ${total} articulos`;
+}
+
+function renderPagination(totalPages) {
+  pageNumbers.innerHTML = "";
+
+  if (totalPages <= 1) {
+    prevButton.disabled = true;
+    nextButton.disabled = true;
+    return;
+  }
+
+  for (let page = 1; page <= totalPages; page += 1) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = `pagination-button${page === currentPage ? " is-active" : ""}`;
+    button.textContent = String(page);
+    button.addEventListener("click", () => {
+      currentPage = page;
+      render();
+    });
+    pageNumbers.appendChild(button);
+  }
+
+  prevButton.disabled = currentPage === 1;
+  nextButton.disabled = currentPage === totalPages;
+}
+
+function render() {
+  const total = filteredItems.length;
+  const totalPages = Math.max(1, Math.ceil(total / pageSize));
+
+  if (currentPage > totalPages) {
+    currentPage = totalPages;
+  }
+
+  const startIndex = (currentPage - 1) * pageSize;
+  const visibleEntries = new Set(
+    filteredItems.slice(startIndex, startIndex + pageSize).map((item) => item.dataset.entry)
+  );
+
+  items.forEach((item) => {
+    const shouldShow = visibleEntries.has(item.dataset.entry);
+    item.hidden = !shouldShow;
+  });
+
+  updateSummary(total);
+  renderPagination(totalPages);
+}
+
+function applySearch() {
+  const query = normalize(searchInput.value.trim());
+
+  filteredItems = items.filter((item) => {
+    const haystack = normalize(item.dataset.search || item.textContent || "");
+    return haystack.includes(query);
+  });
+
+  currentPage = 1;
+  render();
+}
+
+searchInput?.addEventListener("input", applySearch);
+
+prevButton?.addEventListener("click", () => {
+  if (currentPage > 1) {
+    currentPage -= 1;
+    render();
+  }
+});
+
+nextButton?.addEventListener("click", () => {
+  const totalPages = Math.max(1, Math.ceil(filteredItems.length / pageSize));
+  if (currentPage < totalPages) {
+    currentPage += 1;
+    render();
+  }
+});
+
+render();
+"@
+
+[System.IO.File]::WriteAllText((Join-Path $articlesDir "archive.js"), $archiveScriptContent, [System.Text.UTF8Encoding]::new($false))
